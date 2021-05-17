@@ -1,16 +1,7 @@
-# crypto_payments
+# Crypto Payments App
 
-A new Flutter project.
+This is an Android app being built using Flutter and other backend services like Firebase or AWS Amplify. This app is being built just to showcase the crypto transfers and payments without the actual use of the cryptocurrencies. **This application does not have any cryptocurrencies trading on it nor it is being used for any cryptocurrency transfers**.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
