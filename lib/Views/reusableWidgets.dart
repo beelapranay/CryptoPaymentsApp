@@ -7,6 +7,15 @@ class ReusableWidgets{
       bool isObscureText,
       TextInputType textInputType){
     return TextFormField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return "This field can't be empty.";
+        }
+        if (value.length < 10) {
+          return "Your password is too short!";
+        }
+        return null;
+      },
       keyboardType: textInputType,
       style: GoogleFonts.montserrat(
           fontSize: 18
@@ -30,8 +39,8 @@ class ReusableWidgets{
     );
   }
 
-  RaisedButton raisedButton(Function function, String outlineButtonText){
-    return RaisedButton(
+  ElevatedButton elevatedButton(Function function, String outlineButtonText){
+    return ElevatedButton(
         onPressed: function,
         child: Text(outlineButtonText, style: GoogleFonts.montserrat(
           fontSize: 20,

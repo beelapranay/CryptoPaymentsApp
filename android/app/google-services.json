@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "108222452914",
+    "project_id": "ca4p-518e4",
+    "storage_bucket": "ca4p-518e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108222452914:android:82940d00691fb14a4025ab",
+        "android_client_info": {
+          "package_name": "com.example.crypto_payments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "108222452914-ic0to664b8dq56jm9nc8ja9a3saq4oes.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPVhEVt3Mt61jVh7uZslH42AZ6cSRO1ko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108222452914-ic0to664b8dq56jm9nc8ja9a3saq4oes.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
