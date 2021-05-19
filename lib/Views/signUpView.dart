@@ -173,7 +173,7 @@ class _SignUpViewState extends State<SignUpView> {
                               if (value.isEmpty) {
                                 return "This field can't be empty.";
                               }
-                              if (value.length < 10) {
+                              if (value.length < 6) {
                                 return "Your password is too short!";
                               }
                               return null;

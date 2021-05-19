@@ -2,7 +2,6 @@ import 'package:crypto_payments/Views/signUpView.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../firebaseFunctions.dart';
 import 'forgotPassword.dart';
 
@@ -100,7 +99,7 @@ class _SignInViewState extends State<SignInView> {
                               if (value.isEmpty) {
                                 return "This field can't be empty.";
                               }
-                              if (value.length < 10) {
+                              if (value.length < 6) {
                                 return "Your password is too short!";
                               }
                               return null;
