@@ -23,11 +23,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: HexColor("#DFDFDF"),
         appBar: AppBar(
           leading: IconButton(
               onPressed: () async{
-                onPressed = false;
+                setState(() {
+                  onPressed = false;
+                });
                 Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back)
@@ -60,8 +63,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         textAlign: TextAlign.center,
                         style: GoogleFonts.montserrat(
                           fontSize: 18,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold
+                          color: Colors.black87
                         ),
                       ),
                     )

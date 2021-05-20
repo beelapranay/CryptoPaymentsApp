@@ -25,6 +25,7 @@ class _SignInViewState extends State<SignInView> {
     return MaterialApp(
       home: Builder(
         builder: (context) => Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: HexColor("#DFDFDF"),
           body: _isLoading ? Center(
             child: CircularProgressIndicator(

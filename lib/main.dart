@@ -1,5 +1,11 @@
+import 'package:crypto_payments/Views/buyCrypto.dart';
+import 'package:crypto_payments/Views/forgotPassword.dart';
 import 'package:crypto_payments/Views/homeView.dart';
+import 'package:crypto_payments/Views/profileView.dart';
+import 'package:crypto_payments/Views/signInView.dart';
 import 'package:crypto_payments/Views/signUpView.dart';
+import 'package:crypto_payments/Views/transferCrypto.dart';
+import 'package:crypto_payments/Views/walletView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,6 +38,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+        routes: <String, WidgetBuilder>{
+          '/signIn': (BuildContext context) => SignInView(),
+          '/home': (BuildContext context) => HomeController(),
+          '/signUp': (BuildContext context) => SignUpView(),
+          '/forgotPassword': (BuildContext context) => ForgotPassword(),
+          '/walletView': (BuildContext context) => WalletView(),
+          '/profileView': (BuildContext context) => ProfileView(),
+          '/market': (BuildContext context) => BuyCrypto(),
+          '/transferCrypto': (BuildContext context) => TransferCrypto()
+        },
         home: HomeController()
     );
   }

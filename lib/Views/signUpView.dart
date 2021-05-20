@@ -17,7 +17,6 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
 
   final _formKey = GlobalKey<FormState>();
-  ReusableWidgets _reusableWidgets = new ReusableWidgets();
   FirebaseFunctions _firebaseFunctions = new FirebaseFunctions();
   bool isLoading = false;
   TextEditingController _nameTextEditingController = new TextEditingController();
@@ -31,6 +30,7 @@ class _SignUpViewState extends State<SignUpView> {
     return MaterialApp(
         home: Builder(
           builder: (context) => Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: HexColor("#DFDFDF"),
             body: isLoading ? Center(
               child: CircularProgressIndicator(
@@ -225,9 +225,11 @@ class _SignUpViewState extends State<SignUpView> {
                                     onPressed: (){
                                       String _email = _emailTextEditingController.text.toString();
                                       String _password = _passwordTextEditingController.text.toString();
+                                      String _name = _nameTextEditingController.text.toString();
                                       _signUp(
                                           _email,
-                                        _password
+                                        _password,
+                                        _name
                                       );
                                       Navigator.pushReplacement(
                                         context,
@@ -276,12 +278,13 @@ class _SignUpViewState extends State<SignUpView> {
         );
   }
 
-  _signUp(email, password) async{
+  _signUp(email, password, name) async{
     if(_formKey.currentState.validate()){
       setState(() {
         isLoading = true;
       });
-      await _firebaseFunctions.signUp(email, password);
+      await _firebaseFunctions.signUp(email, password, name);
+      await _firebaseFunctions.initialData();
       setState(() {
         isLoading = false;
       });
