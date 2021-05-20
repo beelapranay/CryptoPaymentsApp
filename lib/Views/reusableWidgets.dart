@@ -1,10 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ReusableWidgets{
+
+  double prevPaymentBTC, afterPaymentBTC, finalAmount;
 
   TextFormField textFormField(String labelText,
       bool isObscureText,
@@ -77,41 +80,7 @@ class ReusableWidgets{
           listTileWidget(Icon(Icons.monetization_on_outlined), context, "/market", "Market"),
           listTileWidget(Icon(Icons.account_circle_outlined), context, "/profileView", "Profile"),
           listTileWidget(Icon(Icons.account_balance_wallet_rounded), context, "/walletView", "Wallet"),
-          listTileWidget(Icon(Icons.transfer_within_a_station_rounded), context, "/transferCrypto", "Transfers"),
-
-          SizedBox(height: 20,),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [HexColor("#4CA1AF"), HexColor("#C4E0E5")]
-                ),
-                borderRadius: BorderRadius.circular(20)
-              ),
-              child: Column(
-                children: [
-
-                  Text("Breaking", style: GoogleFonts.montserrat(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold
-                  )),
-                  SizedBox(height: 8,),
-                  Text("Fueling the volatility is Tesla CEO Musk himself, "
-                      "who surprised crypto advocates last week with an "
-                      "announcement that the company would no longer accept "
-                      "Bitcoin as payment. The mood music grew darker over the "
-                      "weekend, with Bitcoin dropping about 15% as Musk "
-                      "doubled-down on his criticism of the cryptocurrency’s "
-                      "environmental load.", style: GoogleFonts.montserrat())
-
-                ],
-              ),
-            ),
-          )
-
+          listTileWidget(Icon(Icons.transfer_within_a_station_rounded), context, "/cryptoPayments", "Payments")
         ],
       ),
     );
@@ -127,12 +96,12 @@ class ReusableWidgets{
   Widget walletsData(BuildContext context, DocumentSnapshot documentSnapshot){
 
     String eth = documentSnapshot.get("eth");
-    String btc = documentSnapshot.get("btc");
+    double btc1 = double.parse(documentSnapshot.get("btc"));
+    double btc = double.parse(btc1.toStringAsFixed(3));
     String ada = documentSnapshot.get("ada");
     String xrp = documentSnapshot.get("xrp");
     String uni = documentSnapshot.get("uni");
     String dot = documentSnapshot.get("dot");
-    String inr = documentSnapshot.get("inr");
 
     return Container(
         decoration: BoxDecoration(
@@ -143,39 +112,8 @@ class ReusableWidgets{
         child: Column(
           children: [
 
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-
-                  Text(
-                      "Balance",
-                    style: GoogleFonts.montserrat(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                    )
-                  ),
-
-                  Text(
-                    "₹ $inr",
-                      style: GoogleFonts.montserrat(
-                          fontSize: 18
-                      )
-                  )
-
-                ],
-              ),
-            ),
-
-            Divider(
-              thickness: 1.5,
-              height: 2,
-              color: Colors.grey,
-            ),
-
             listTile(eth, "eth.png"),
-            listTile(btc, "btc.png"),
+            listTile(btc.toString(), "btc.png"),
             listTile(ada, "ada.png"),
             listTile(xrp, "xrp.png"),
             listTile(uni, "uni.png"),
@@ -203,6 +141,109 @@ class ReusableWidgets{
         SizedBox(height: 8,)
       ],
     );
+  }
+
+  Widget paymentsData(BuildContext context, DocumentSnapshot documentSnapshot){
+
+    AutoSizeText _autoSizeTextBold(String text){
+      return AutoSizeText(
+        text,
+        style: GoogleFonts.montserrat(
+            fontWeight: FontWeight.bold,
+            fontSize: 20
+        ),
+      );
+    }
+
+    String image = documentSnapshot.get("image");
+    String status = documentSnapshot.get("status");
+    double amount = documentSnapshot.get("amount");
+
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white
+        ),
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+
+            Align(
+                alignment: Alignment.center,
+                child: Image(
+                  height: 100,
+                  width: 100,
+                  image: NetworkImage(image),
+                )
+            ),
+
+            SizedBox(height: 8,),
+
+            AutoSizeText(
+                "$amount BTC",
+                style: GoogleFonts.montserrat(
+                    color: Colors.green,
+                    fontSize: 16
+                )
+            ),
+
+            SizedBox(height: 8,),
+
+            AutoSizeText(
+                "Status - $status",
+                style: GoogleFonts.montserrat(
+                    color: status == "Pending" ? Colors.deepOrangeAccent : Colors.green,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
+                )
+            ),
+
+            status != "Pending" ? Container(height: 0,)
+                : OutlineButton(
+                highlightedBorderColor: Colors.black87,
+                borderSide: BorderSide(color: Colors.black87),
+                child: Text("Pay with BTC",
+                    style: GoogleFonts.montserrat()
+                ),
+                onPressed: () async {
+                  if (status == "Pending") {
+
+                    await FirebaseFirestore.instance.collection('Holdings')
+                        .doc(FirebaseAuth.instance.currentUser.uid)
+                    // ignore: non_constant_identifier_names
+                        .get().then((DocumentSnapshot) =>
+                    {
+                      prevPaymentBTC = double.parse(DocumentSnapshot.get("btc")),
+                    }
+                    );
+
+                    finalAmount = prevPaymentBTC - amount;
+
+                    prevPaymentBTC < amount ? null :
+
+                    await FirebaseFirestore.instance
+                        .collection("Holdings")
+                        .doc(FirebaseAuth.instance.currentUser.uid)
+                        .collection("transfers")
+                        .doc(documentSnapshot.id)
+                        .update({
+                      "status": "Paid",
+                    });
+
+                    await FirebaseFirestore.instance
+                        .collection("Holdings")
+                        .doc(FirebaseAuth.instance.currentUser.uid)
+                        .update({
+                      "btc": finalAmount.toString(),
+                    });
+                  }
+                }
+              ),
+
+          ],
+        )
+    );
+
   }
 
 }

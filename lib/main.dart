@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
           '/walletView': (BuildContext context) => WalletView(),
           '/profileView': (BuildContext context) => ProfileView(),
           '/market': (BuildContext context) => BuyCrypto(),
-          '/transferCrypto': (BuildContext context) => TransferCrypto()
+          '/cryptoPayments': (BuildContext context) => CryptoPayments()
         },
         home: HomeController()
     );

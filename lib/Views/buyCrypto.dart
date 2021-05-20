@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_payments/Views/reusableWidgets.dart';
 import 'package:crypto_payments/firebaseFunctions.dart';
 import 'package:flutter/material.dart';
@@ -154,6 +153,7 @@ class _BuyCryptoState extends State<BuyCrypto> {
               cursorWidth: 1,
               obscureText: false,
               decoration: InputDecoration(
+                errorStyle: GoogleFonts.montserrat(),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.grey, width: 0.0),
                   ),
